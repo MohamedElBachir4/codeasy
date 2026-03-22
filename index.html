@@ -114,6 +114,10 @@
         html[data-theme="light"] .hover\:bg-neutral-900\/90:hover { background: rgba(37,99,235,0.05) !important; }
         html[data-theme="light"] li { color: #6b7280 !important; }
         html[data-theme="light"] .list-inside { color: #6b7280 !important; }
+        html[data-theme="light"] .bg-blue-500 { background: #3b82f6 !important; }
+        html[data-theme="light"] .border-white { border-color: #ffffff !important; }
+
+
 
 
     </style>
@@ -123,7 +127,7 @@
     <!-- fixed minimalist nav (transparent glass) -->
     <nav class="fixed top-0 w-full z-50 glass border-b border-subtle py-4 slide-in-down">
         <div class="container mx-auto px-6 flex justify-between items-center">
-            <span class="text-xl font-bold tracking-tight text-white transition-all duration-300 hover:text-blue-400">souati<span class="text-blue-400">.</span></span>
+            <a href="#home" class="text-xl font-bold tracking-tight text-white transition-all duration-300 hover:text-blue-400 cursor-pointer">souati<span class="text-blue-400">.</span></a>
             <div class="hidden md:flex gap-8 items-center text-sm font-medium text-muted">
                 <a href="#home" class="hover:text-white transition-all duration-300 relative group">home<span class="absolute bottom-0 left-0 w-0 h-0.5 bg-blue-400 group-hover:w-full transition-all duration-300"></span></a>
                 <a href="#skills" class="hover:text-white transition-all duration-300 relative group">skills<span class="absolute bottom-0 left-0 w-0 h-0.5 bg-blue-400 group-hover:w-full transition-all duration-300"></span></a>
@@ -166,8 +170,8 @@
                         <div class="profile-ring w-full h-full overflow-hidden flex items-center justify-center bg-gradient-to-b from-neutral-800 to-neutral-900 shadow-2xl">
                             <img id="profile-photo" src="PHOTO.JPEG" alt="Souati Mohamed El Bachir" class="w-full h-full object-cover" width="384" height="384" fetchpriority="high" loading="eager" decoding="async" onerror="handleProfileImageError(this);">
                         </div>
-                        <div class="absolute -bottom-6 -right-6 bg-gradient-to-br from-blue-600 to-blue-700 rounded-full p-5 shadow-2xl shadow-blue-900/40 border border-blue-500/30">
-                            <i class="fa-regular fa-code text-white text-2xl"></i>
+                        <div class="absolute -bottom-6 -right-6 bg-gradient-to-br from-blue-600 to-blue-700 rounded-full w-20 h-20 flex items-center justify-center shadow-2xl shadow-blue-900/40 border border-blue-500/30">
+                            <i class="fa-solid fa-check text-white text-3xl font-bold"></i>
                         </div>
                     </div>
                 </div>
@@ -411,6 +415,34 @@
                 if(id==='#') return;
                 document.querySelector(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
             });
+        });
+        
+        // scroll animation for elements
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+        
+        // observe all sections and cards
+        const observeElements = document.querySelectorAll('section, .card-dark, .fade-in-up, [class*="bg-gradient"]');
+        observeElements.forEach((el, index) => {
+            // exclude hero section from scroll animation
+            if (el.id !== 'home') {
+                el.style.opacity = '0';
+                el.style.transform = 'translateY(30px)';
+                el.style.transition = `opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1) ${index * 0.02}s, transform 0.3s cubic-bezier(0.4, 0, 0.2, 1) ${index * 0.02}s`;
+                observer.observe(el);
+            }
         });
     </script>
     <!-- theme toggle: default dark, click to switch to light -->
