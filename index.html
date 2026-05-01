@@ -2,18 +2,17 @@
 <html lang="en" data-theme="dark">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>Souati Mohamed El Bachir · full‑stack developer</title>
-    <!-- keep same favicon / preload logic, but we simplify for demo -->
-    <link rel="icon" type="image/jpeg" href="PHOTO.JPEG">
-    <!-- Preload profile photo for faster LCP on Vercel -->
-    <link rel="preload" as="image" href="PHOTO.JPEG">
+    <link rel="icon" type="image/jpeg" href="profile.jpeg">
+    <link rel="preload" as="image" href="profile.jpeg">
     <!-- Tailwind + Fonts -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz@14..32&display=swap" rel="stylesheet">
     <style>
         * { font-family: 'Inter', system-ui, sans-serif; }
+        html, body { overflow-x: hidden; overscroll-behavior-x: none; margin: 0; padding: 0; width: 100%; }
         body { background: #0f0f0f; color: #f5f5f5; scroll-behavior: smooth; line-height: 1.6; }
         .glass { background: rgba(15,15,15,0.75); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.05); box-shadow: 0 8px 32px rgba(0,0,0,0.1); }
         .card-dark { background: linear-gradient(135deg, #1a1a1a 0%, #141414 100%); border: 1px solid rgba(255,255,255,0.08); border-radius: 1.5rem; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
@@ -116,6 +115,9 @@
         html[data-theme="light"] .list-inside { color: #6b7280 !important; }
         html[data-theme="light"] .bg-blue-500 { background: #3b82f6 !important; }
         html[data-theme="light"] .border-white { border-color: #ffffff !important; }
+        html.mobile-nav-open,
+        html.mobile-nav-open body { overflow: hidden; height: 100%; }
+        #mobile-nav-backdrop.mobile-nav-backdrop-open { opacity: 1 !important; pointer-events: auto !important; visibility: visible !important; }
 
 
 
@@ -124,36 +126,50 @@
 <body class="antialiased">
 
     <!-- fixed minimalist nav (transparent glass) -->
-    <nav class="fixed top-0 w-full z-50 glass border-b border-subtle py-4 slide-in-down">
-        <div class="container mx-auto px-6 flex justify-between items-center">
-            <a href="#home" class="text-xl font-bold tracking-tight text-white transition-all duration-300 hover:text-blue-400 cursor-pointer">souati<span class="text-blue-400">.</span></a>
-            <div class="hidden md:flex gap-8 items-center text-sm font-medium text-muted">
-                <a href="#home" class="hover:text-white transition-all duration-300 relative group">home<span class="absolute bottom-0 left-0 w-0 h-0.5 bg-blue-400 group-hover:w-full transition-all duration-300"></span></a>
-                <a href="#skills" class="hover:text-white transition-all duration-300 relative group">skills<span class="absolute bottom-0 left-0 w-0 h-0.5 bg-blue-400 group-hover:w-full transition-all duration-300"></span></a>
-                <a href="#projects" class="hover:text-white transition-all duration-300 relative group">projects<span class="absolute bottom-0 left-0 w-0 h-0.5 bg-blue-400 group-hover:w-full transition-all duration-300"></span></a>
-                <a href="#about" class="hover:text-white transition-all duration-300 relative group">about<span class="absolute bottom-0 left-0 w-0 h-0.5 bg-blue-400 group-hover:w-full transition-all duration-300"></span></a>
-                <a href="#contact" class="hover:text-white transition-all duration-300 relative group">contact<span class="absolute bottom-0 left-0 w-0 h-0.5 bg-blue-400 group-hover:w-full transition-all duration-300"></span></a>
-                <button id="theme-toggle" type="button" class="text-muted hover:text-white text-xl transition-colors" aria-label="Toggle theme"><i class="fa-regular fa-moon" id="theme-icon"></i></button>
+    <nav id="site-nav" class="fixed top-0 left-0 right-0 z-50 glass border-b border-subtle slide-in-down">
+        <div class="relative w-full py-4">
+            <div class="mx-auto flex w-full max-w-6xl items-center justify-between px-5 sm:px-8">
+                <a href="#home" class="nav-logo-home shrink-0 text-xl font-bold tracking-tight text-white transition-all duration-300 hover:text-blue-400 cursor-pointer">souati<span class="text-blue-400">.</span></a>
+                <div class="hidden md:flex gap-8 items-center text-sm font-medium text-muted">
+                    <a href="#home" class="hover:text-white transition-all duration-300 relative group">home<span class="absolute bottom-0 left-0 w-0 h-0.5 bg-blue-400 group-hover:w-full transition-all duration-300"></span></a>
+                    <a href="#skills" class="hover:text-white transition-all duration-300 relative group">skills<span class="absolute bottom-0 left-0 w-0 h-0.5 bg-blue-400 group-hover:w-full transition-all duration-300"></span></a>
+                    <a href="#projects" class="hover:text-white transition-all duration-300 relative group">projects<span class="absolute bottom-0 left-0 w-0 h-0.5 bg-blue-400 group-hover:w-full transition-all duration-300"></span></a>
+                    <a href="#about" class="hover:text-white transition-all duration-300 relative group">about<span class="absolute bottom-0 left-0 w-0 h-0.5 bg-blue-400 group-hover:w-full transition-all duration-300"></span></a>
+                    <a href="#contact" class="hover:text-white transition-all duration-300 relative group">contact<span class="absolute bottom-0 left-0 w-0 h-0.5 bg-blue-400 group-hover:w-full transition-all duration-300"></span></a>
+                    <button id="theme-toggle" type="button" class="text-muted hover:text-white text-xl transition-colors" aria-label="Toggle theme"><i class="fa-regular fa-moon" id="theme-icon"></i></button>
+                </div>
+                <button type="button" id="mobile-nav-toggle" class="md:hidden text-white text-2xl p-2 rounded-lg hover:bg-white/10 transition-colors inline-flex items-center justify-center w-11 h-11 shrink-0" aria-expanded="false" aria-controls="mobile-nav-panel" aria-label="القائمة"><i id="mobile-nav-toggle-icon" class="fa-solid fa-bars fa-fw pointer-events-none" aria-hidden="true"></i></button>
             </div>
-            <button class="md:hidden text-white text-2xl"><i class="fa-regular fa-bars"></i></button>
+            <!-- Mobile drawer -->
+            <div id="mobile-nav-panel" class="hidden md:hidden absolute left-0 right-0 top-full border-t border-subtle shadow-2xl glass max-h-[min(70vh,calc(100dvh-5rem))] overflow-y-auto overscroll-contain">
+            <div class="mx-auto flex w-full max-w-6xl flex-col items-center gap-5 py-5 text-center text-lg font-medium text-muted px-5 sm:px-8">
+                <a href="#home" class="mobile-nav-link w-full max-w-xs hover:text-white transition-colors py-1 border-b border-white/10">home</a>
+                <a href="#skills" class="mobile-nav-link w-full max-w-xs hover:text-white transition-colors py-1 border-b border-white/10">skills</a>
+                <a href="#projects" class="mobile-nav-link w-full max-w-xs hover:text-white transition-colors py-1 border-b border-white/10">projects</a>
+                <a href="#about" class="mobile-nav-link w-full max-w-xs hover:text-white transition-colors py-1 border-b border-white/10">about</a>
+                <a href="#contact" class="mobile-nav-link w-full max-w-xs hover:text-white transition-colors py-1 border-b border-white/10">contact</a>
+                <button type="button" id="theme-toggle-mobile" class="text-muted hover:text-white flex items-center justify-center gap-3 pt-2 w-full max-w-xs" aria-label="Toggle theme"><i class="fa-regular fa-moon text-xl" id="theme-icon-mobile" aria-hidden="true"></i> theme</button>
+                </div>
+            </div>
         </div>
     </nav>
+    <div id="mobile-nav-backdrop" class="fixed inset-0 z-40 md:hidden bg-black/60 opacity-0 pointer-events-none invisible transition-opacity duration-200" aria-hidden="true"></div>
 
     <!-- HERO section (clean, minimal, large name) -->
-    <section id="home" class="relative pt-40 pb-28 px-6 overflow-hidden hero-glow">
-        <div class="container mx-auto max-w-6xl">
-            <div class="flex flex-col-reverse lg:flex-row items-center gap-16">
-                <div class="flex-1 text-center lg:text-left fade-in-up">
+    <section id="home" class="relative overflow-hidden pb-28 pt-40 px-5 sm:px-8 hero-glow">
+        <div class="mx-auto w-full max-w-6xl">
+            <div class="flex w-full max-w-full flex-col-reverse items-stretch gap-16 lg:flex-row lg:items-center">
+                <div class="flex min-w-0 w-full flex-1 flex-col items-center text-center lg:items-start lg:text-left fade-in-up">
                     <span class="inline-block px-4 py-1.5 text-xs tracking-widest text-blue-400 border border-blue-600/30 rounded-full bg-blue-600/10 mb-8 font-semibold">FULL STACK · 3+ YEARS</span>
-                    <h1 class="text-6xl md:text-7xl lg:text-7xl font-bold leading-[1.1] tracking-tight mb-6">
+                    <h1 class="text-[clamp(2.75rem,8vw,3.75rem)] md:text-7xl lg:text-7xl font-bold leading-[1.1] tracking-tight mx-auto mb-6 max-w-full break-words px-1 sm:px-0 lg:mx-0">
                         Souati Mohamed<br><span class="bg-gradient-to-r from-blue-400 to-blue-300 bg-clip-text text-transparent">El Bachir</span>
                     </h1>
-                    <p class="text-lg md:text-xl text-muted mt-8 max-w-2xl mx-auto lg:mx-0 leading-relaxed">
+                    <p class="mx-auto mt-8 max-w-2xl w-full text-lg leading-relaxed text-muted md:text-xl lg:mx-0">
                         Crafting elegant web experiences with precision and care. Specializing in modern full‑stack development with a passion for clean architecture and performance.
                     </p>
-                    <div class="mt-8 max-w-2xl mx-auto lg:mx-0 flex justify-center lg:justify-start">
-                        <p class="inline-flex items-start gap-3 text-base md:text-lg text-muted text-left leading-relaxed max-w-md lg:max-w-none" role="note">
-                            <i class="fa-solid fa-trophy shrink-0 text-blue-400 text-lg mt-0.5" aria-hidden="true"></i>
+                    <div class="mt-8 max-w-2xl mx-auto lg:mx-0 flex justify-center lg:justify-start px-2 sm:px-0">
+                        <p class="flex flex-col sm:inline-flex sm:flex-row items-center gap-3 text-base md:text-lg text-muted text-center sm:text-left leading-relaxed max-w-md lg:max-w-none mx-auto lg:mx-0" role="note">
+                            <i class="fa-solid fa-trophy shrink-0 text-blue-400 text-lg sm:mt-0.5" aria-hidden="true"></i>
                             <span><span class="font-semibold text-white">First place</span> — Algeria’s national programmers’ competition for universities, 2026.</span>
                         </p>
                     </div>
@@ -170,12 +186,12 @@
                     </div>
                 </div>
                 <!-- profile image (same fallback used) -->
-                <div class="flex-1 flex justify-center fade-in-up" style="animation-delay: 0.1s">
-                    <div class="relative w-64 h-64 md:w-80 md:h-80 lg:w-96 lg:h-96">
+                <div class="flex w-full min-w-0 flex-1 justify-center fade-in-up lg:flex-1 lg:justify-center" style="animation-delay: 0.1s">
+                    <div class="relative h-64 w-64 shrink-0 md:h-80 md:w-80 lg:h-96 lg:w-96">
                         <div class="profile-ring w-full h-full overflow-hidden flex items-center justify-center bg-gradient-to-b from-neutral-800 to-neutral-900 shadow-2xl">
-                            <img id="profile-photo" src="PHOTO.JPEG" alt="Souati Mohamed El Bachir" class="w-full h-full object-cover" width="384" height="384" fetchpriority="high" loading="eager" decoding="async" onerror="handleProfileImageError(this);">
+                            <img id="profile-photo" src="profile.jpeg" alt="Souati Mohamed El Bachir" class="w-full h-full object-cover object-center" width="856" height="1080" fetchpriority="high" loading="eager" decoding="async" onerror="handleProfileImageError(this);">
                         </div>
-                        <div class="absolute -bottom-6 -right-6 bg-gradient-to-br from-blue-600 to-blue-700 rounded-full w-20 h-20 flex items-center justify-center shadow-2xl shadow-blue-900/40 border border-blue-500/30">
+                        <div class="absolute -bottom-6 left-1/2 -translate-x-1/2 md:left-auto md:translate-x-0 md:-right-6 bg-gradient-to-br from-blue-600 to-blue-700 rounded-full w-20 h-20 flex items-center justify-center shadow-2xl shadow-blue-900/40 border border-blue-500/30">
                             <i class="fa-solid fa-check text-white text-3xl font-bold"></i>
                         </div>
                     </div>
@@ -188,13 +204,13 @@
     <div class="w-full h-px bg-gradient-to-r from-transparent via-neutral-800 to-transparent"></div>
 
     <!-- SKILLS section (infinite scroll but more subtle) -->
-    <section id="skills" class="py-24 px-6">
+    <section id="skills" class="py-24 px-5 sm:px-8">
         <div class="container mx-auto text-center max-w-3xl">
             <span class="text-blue-400 font-mono text-sm tracking-widest">// TECHNICAL STACK</span>
             <h2 class="text-5xl font-bold mt-4 mb-16">Skills & Technologies</h2>
         </div>
         <!-- infinite scroll container (same concept, but darker) -->
-        <div class="skills-scroll-container overflow-hidden relative">
+        <div class="skills-scroll-container overflow-x-hidden relative touch-pan-y isolate">
             <div class="skills-scroll flex gap-6 animate-scroll" style="animation: scroll 32s linear infinite;">
                 <!-- first set -->
                 <div class="skill-tag"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg" class="w-5 h-5">HTML5</div>
@@ -227,21 +243,21 @@
     </section>
 
     <div class="w-full h-px bg-gradient-to-r from-transparent via-neutral-800 to-transparent"></div>
-    <section id="projects" class="py-28 px-6">
-        <div class="container mx-auto max-w-6xl">
-            <div class="text-center max-w-xl mx-auto mb-20">
-                <span class="text-blue-400 font-mono text-sm tracking-widest">// FEATURED WORK</span>
-                <h2 class="text-5xl font-bold mt-4">Recent Projects</h2>
-                <p class="text-muted mt-4 text-lg">Handpicked projects showcasing my expertise in modern web development</p>
-            </div>
+    <section id="projects" class="py-28">
+        <div class="mx-auto w-full max-w-6xl px-5 sm:px-8">
+            <header class="mx-auto mb-20 w-full max-w-xl px-2 text-center">
+                <span class="inline-block text-blue-400 font-mono text-sm tracking-widest">// FEATURED WORK</span>
+                <h2 class="mt-4 text-5xl font-bold">Recent Projects</h2>
+                <p class="mt-4 text-lg text-muted">Handpicked projects showcasing my expertise in modern web development</p>
+            </header>
             <div class="space-y-10">
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="grid grid-cols-1 justify-items-center gap-8 md:grid-cols-2 md:justify-items-stretch lg:grid-cols-3">
                     <!-- Foni (featured first) -->
-                    <div class="card-dark p-6 flex flex-col group fade-in-up">
-                        <div class="bg-gradient-to-br from-neutral-900 to-neutral-950 rounded-xl h-48 flex items-center justify-center overflow-hidden border border-neutral-700/50 group-hover:border-neutral-600 transition-all duration-300">
+                    <div class="card-dark w-full max-w-lg justify-self-center p-6 flex flex-col items-center text-center md:max-w-none md:justify-self-stretch md:items-stretch md:text-left group fade-in-up">
+                        <div class="bg-gradient-to-br from-neutral-900 to-neutral-950 rounded-xl h-48 flex items-center justify-center overflow-hidden border border-neutral-700/50 group-hover:border-neutral-600 transition-all duration-300 w-full">
                             <img src="foni.png" alt="FONI e-commerce storefront" class="w-full h-full object-cover" onerror="this.onerror=null; this.parentElement.innerHTML='<i class=\'fa-regular fa-image text-5xl text-neutral-600\'></i>';">
                         </div>
-                        <div class="flex justify-between items-start mt-6 mb-3">
+                        <div class="flex w-full justify-between items-start mt-6 mb-3 max-md:flex-col max-md:items-center gap-2 max-md:gap-3">
                             <h3 class="text-2xl font-bold">FONI</h3>
                             <span class="badge-project">e-commerce</span>
                         </div>
@@ -249,11 +265,11 @@
                         <a href="https://foni-dz.com/" target="_blank" class="mt-8 text-blue-400 font-semibold inline-flex items-center gap-2 group/link hover:gap-3 transition-all duration-300">visit <i class="fa-solid fa-arrow-right group-hover/link:translate-x-1 transition-all duration-300"></i></a>
                     </div>
                     <!-- Flanora Perfumes -->
-                    <div class="card-dark p-6 flex flex-col group fade-in-up" style="animation-delay: 0.1s">
-                        <div class="bg-gradient-to-br from-neutral-900 to-neutral-950 rounded-xl h-48 flex items-center justify-center overflow-hidden border border-neutral-700/50 group-hover:border-neutral-600 transition-all duration-300">
+                    <div class="card-dark w-full max-w-lg justify-self-center p-6 flex flex-col items-center text-center md:max-w-none md:justify-self-stretch md:items-stretch md:text-left group fade-in-up" style="animation-delay: 0.1s">
+                        <div class="bg-gradient-to-br from-neutral-900 to-neutral-950 rounded-xl h-48 flex items-center justify-center overflow-hidden border border-neutral-700/50 group-hover:border-neutral-600 transition-all duration-300 w-full">
                             <img src="flanora.png" alt="Flanora Perfumes storefront" class="w-full h-full object-cover" onerror="this.onerror=null; this.parentElement.innerHTML='<i class=\'fa-regular fa-image text-5xl text-neutral-600\'></i>';">
                         </div>
-                        <div class="flex justify-between items-start mt-6 mb-3">
+                        <div class="flex w-full justify-between items-start mt-6 mb-3 max-md:flex-col max-md:items-center gap-2 max-md:gap-3">
                             <h3 class="text-2xl font-bold">Flanora Perfumes</h3>
                             <span class="badge-project">e-commerce</span>
                         </div>
@@ -261,11 +277,11 @@
                         <a href="https://flanora-perfumes.com/" target="_blank" class="mt-8 text-blue-400 font-semibold inline-flex items-center gap-2 group/link hover:gap-3 transition-all duration-300">visit <i class="fa-solid fa-arrow-right group-hover/link:translate-x-1 transition-all duration-300"></i></a>
                     </div>
                     <!-- Choffly -->
-                    <div class="card-dark p-6 flex flex-col group fade-in-up" style="animation-delay: 0.2s">
-                        <div class="bg-gradient-to-br from-neutral-900 to-neutral-950 rounded-xl h-48 flex items-center justify-center overflow-hidden border border-neutral-700/50 group-hover:border-neutral-600 transition-all duration-300">
+                    <div class="card-dark w-full max-w-lg justify-self-center p-6 flex flex-col items-center text-center md:max-w-none md:justify-self-stretch md:items-stretch md:text-left group fade-in-up" style="animation-delay: 0.2s">
+                        <div class="bg-gradient-to-br from-neutral-900 to-neutral-950 rounded-xl h-48 flex items-center justify-center overflow-hidden border border-neutral-700/50 group-hover:border-neutral-600 transition-all duration-300 w-full">
                             <img src="choffly.png" alt="choffly" class="w-full h-full object-cover" onerror="this.onerror=null; this.parentElement.innerHTML='<i class=\'fa-regular fa-image text-5xl text-neutral-600\'></i>';">
                         </div>
-                        <div class="flex justify-between items-start mt-6 mb-3">
+                        <div class="flex w-full justify-between items-start mt-6 mb-3 max-md:flex-col max-md:items-center gap-2 max-md:gap-3">
                             <h3 class="text-2xl font-bold">Choffly</h3>
                             <span class="badge-project">web app</span>
                         </div>
@@ -279,13 +295,13 @@
                         <i class="fa-solid fa-chevron-down text-sm transition-transform duration-300" id="projects-more-btn-icon"></i>
                     </button>
                 </div>
-                <div id="projects-more" class="hidden grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div id="projects-more" class="hidden grid grid-cols-1 justify-items-center gap-8 md:grid-cols-2 md:justify-items-stretch lg:grid-cols-3">
                     <!-- mak-luxury -->
-                    <div class="card-dark p-6 flex flex-col group fade-in-up">
-                        <div class="bg-gradient-to-br from-neutral-900 to-neutral-950 rounded-xl h-48 flex items-center justify-center overflow-hidden border border-neutral-700/50 group-hover:border-neutral-600 transition-all duration-300">
+                    <div class="card-dark w-full max-w-lg justify-self-center p-6 flex flex-col items-center text-center md:max-w-none md:justify-self-stretch md:items-stretch md:text-left group fade-in-up">
+                        <div class="bg-gradient-to-br from-neutral-900 to-neutral-950 rounded-xl h-48 flex items-center justify-center overflow-hidden border border-neutral-700/50 group-hover:border-neutral-600 transition-all duration-300 w-full">
                             <img src="mak.png" alt="mak-luxury" class="w-full h-full object-cover" onerror="this.onerror=null; this.parentElement.innerHTML='<i class=\'fa-regular fa-image text-5xl text-neutral-600\'></i>';">
                         </div>
-                        <div class="flex justify-between items-start mt-6 mb-3">
+                        <div class="flex w-full justify-between items-start mt-6 mb-3 max-md:flex-col max-md:items-center gap-2 max-md:gap-3">
                             <h3 class="text-2xl font-bold">Mak‑Luxury</h3>
                             <span class="badge-project">real estate</span>
                         </div>
@@ -293,11 +309,11 @@
                         <a href="https://mohamedelbachir4.github.io/mak-luxury/" target="_blank" class="mt-8 text-blue-400 font-semibold inline-flex items-center gap-2 group/link hover:gap-3 transition-all duration-300">visit <i class="fa-solid fa-arrow-right group-hover/link:translate-x-1 transition-all duration-300"></i></a>
                     </div>
                     <!-- letters (korni) -->
-                    <div class="card-dark p-6 flex flex-col group fade-in-up" style="animation-delay: 0.1s">
-                        <div class="bg-gradient-to-br from-neutral-900 to-neutral-950 rounded-xl h-48 flex items-center justify-center overflow-hidden border border-neutral-700/50 group-hover:border-neutral-600 transition-all duration-300">
+                    <div class="card-dark w-full max-w-lg justify-self-center p-6 flex flex-col items-center text-center md:max-w-none md:justify-self-stretch md:items-stretch md:text-left group fade-in-up" style="animation-delay: 0.1s">
+                        <div class="bg-gradient-to-br from-neutral-900 to-neutral-950 rounded-xl h-48 flex items-center justify-center overflow-hidden border border-neutral-700/50 group-hover:border-neutral-600 transition-all duration-300 w-full">
                             <img src="korni.png" alt="letters" class="w-full h-full object-cover" onerror="this.onerror=null; this.parentElement.innerHTML='<i class=\'fa-regular fa-image text-5xl text-neutral-600\'></i>';">
                         </div>
-                        <div class="flex justify-between items-start mt-6 mb-3">
+                        <div class="flex w-full justify-between items-start mt-6 mb-3 max-md:flex-col max-md:items-center gap-2 max-md:gap-3">
                             <h3 class="text-2xl font-bold">Letters</h3>
                             <span class="badge-project">educational</span>
                         </div>
@@ -305,11 +321,11 @@
                         <a href="https://korni-fatima.vercel.app/index.html" target="_blank" class="mt-8 text-blue-400 font-semibold inline-flex items-center gap-2 group/link hover:gap-3 transition-all duration-300">visit <i class="fa-solid fa-arrow-right group-hover/link:translate-x-1 transition-all duration-300"></i></a>
                     </div>
                     <!-- mawthooq -->
-                    <div class="card-dark p-6 flex flex-col group fade-in-up" style="animation-delay: 0.2s">
-                        <div class="bg-gradient-to-br from-neutral-900 to-neutral-950 rounded-xl h-48 flex items-center justify-center overflow-hidden border border-neutral-700/50 group-hover:border-neutral-600 transition-all duration-300">
+                    <div class="card-dark w-full max-w-lg justify-self-center p-6 flex flex-col items-center text-center md:max-w-none md:justify-self-stretch md:items-stretch md:text-left group fade-in-up" style="animation-delay: 0.2s">
+                        <div class="bg-gradient-to-br from-neutral-900 to-neutral-950 rounded-xl h-48 flex items-center justify-center overflow-hidden border border-neutral-700/50 group-hover:border-neutral-600 transition-all duration-300 w-full">
                             <img src="mawth.png" alt="Mawthooq" class="w-full h-full object-cover" onerror="this.onerror=null; this.parentElement.innerHTML='<i class=\'fa-regular fa-image text-5xl text-neutral-600\'></i>';">
                         </div>
-                        <div class="flex justify-between items-start mt-6 mb-3">
+                        <div class="flex w-full justify-between items-start mt-6 mb-3 max-md:flex-col max-md:items-center gap-2 max-md:gap-3">
                             <h3 class="text-2xl font-bold">Mawthooq</h3>
                             <span class="badge-project">web app</span>
                         </div>
@@ -317,11 +333,11 @@
                         <a href="https://mohamedelbachir4.github.io/mawthooq/#scan" target="_blank" class="mt-8 text-blue-400 font-semibold inline-flex items-center gap-2 group/link hover:gap-3 transition-all duration-300">visit <i class="fa-solid fa-arrow-right group-hover/link:translate-x-1 transition-all duration-300"></i></a>
                     </div>
                     <!-- RabahPhone -->
-                    <div class="card-dark p-6 flex flex-col group fade-in-up" style="animation-delay: 0.3s">
-                        <div class="bg-gradient-to-br from-neutral-900 to-neutral-950 rounded-xl h-48 flex items-center justify-center overflow-hidden border border-neutral-700/50 group-hover:border-neutral-600 transition-all duration-300">
+                    <div class="card-dark w-full max-w-lg justify-self-center p-6 flex flex-col items-center text-center md:max-w-none md:justify-self-stretch md:items-stretch md:text-left group fade-in-up" style="animation-delay: 0.3s">
+                        <div class="bg-gradient-to-br from-neutral-900 to-neutral-950 rounded-xl h-48 flex items-center justify-center overflow-hidden border border-neutral-700/50 group-hover:border-neutral-600 transition-all duration-300 w-full">
                             <img src="rabah.png" alt="RabahPhone e-commerce storefront" class="w-full h-full object-cover" onerror="this.onerror=null; this.parentElement.innerHTML='<i class=\'fa-regular fa-image text-5xl text-neutral-600\'></i>';">
                         </div>
-                        <div class="flex justify-between items-start mt-6 mb-3">
+                        <div class="flex w-full justify-between items-start mt-6 mb-3 max-md:flex-col max-md:items-center gap-2 max-md:gap-3">
                             <h3 class="text-2xl font-bold">RabahPhone</h3>
                             <span class="badge-project">e-commerce</span>
                         </div>
@@ -334,7 +350,7 @@
     </section>
 
     <!-- ABOUT / professional approach with stats -->
-    <section id="about" class="py-28 px-6 bg-gradient-to-b from-neutral-900/50 to-black/20">
+    <section id="about" class="py-28 px-5 sm:px-8 bg-gradient-to-b from-neutral-900/50 to-black/20">
         <div class="container mx-auto max-w-5xl">
             <div class="text-center mb-16">
                 <span class="text-blue-400 font-mono text-sm tracking-widest">// ABOUT ME</span>
@@ -342,15 +358,15 @@
                 <p class="text-muted text-xl max-w-2xl mx-auto">Focused on delivering clean code, timely delivery, and user-centered solutions</p>
             </div>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
-                <div class="bg-gradient-to-br from-neutral-900/80 to-neutral-950 rounded-2xl p-8 border border-neutral-800/50 hover:border-neutral-700 hover:bg-neutral-900/90 transition-all duration-300 fade-in-up">
-                    <div class="w-14 h-14 bg-blue-600/20 rounded-lg flex items-center justify-center mb-6 group-hover:bg-blue-600/30">
+                <div class="bg-gradient-to-br from-neutral-900/80 to-neutral-950 rounded-2xl p-8 border border-neutral-800/50 hover:border-neutral-700 hover:bg-neutral-900/90 transition-all duration-300 fade-in-up text-center md:text-left">
+                    <div class="w-14 h-14 mx-auto md:mx-0 bg-blue-600/20 rounded-lg flex items-center justify-center mb-6 group-hover:bg-blue-600/30">
                         <i class="fa-regular fa-gem text-blue-400 text-2xl"></i>
                     </div>
                     <h3 class="text-2xl font-bold mb-3">High Professionalism</h3>
                     <p class="text-muted text-base leading-relaxed">Elegant development with superior quality, precision, and premium user experience across all projects.</p>
                 </div>
-                <div class="bg-gradient-to-br from-neutral-900/80 to-neutral-950 rounded-2xl p-8 border border-neutral-800/50 hover:border-neutral-700 hover:bg-neutral-900/90 transition-all duration-300 fade-in-up" style="animation-delay: 0.1s">
-                    <div class="w-14 h-14 bg-blue-600/20 rounded-lg flex items-center justify-center mb-6 group-hover:bg-blue-600/30">
+                <div class="bg-gradient-to-br from-neutral-900/80 to-neutral-950 rounded-2xl p-8 border border-neutral-800/50 hover:border-neutral-700 hover:bg-neutral-900/90 transition-all duration-300 fade-in-up text-center md:text-left" style="animation-delay: 0.1s">
+                    <div class="w-14 h-14 mx-auto md:mx-0 bg-blue-600/20 rounded-lg flex items-center justify-center mb-6 group-hover:bg-blue-600/30">
                         <i class="fa-regular fa-clock text-blue-400 text-2xl"></i>
                     </div>
                     <h3 class="text-2xl font-bold mb-3">Timely Delivery</h3>
@@ -363,7 +379,7 @@
                 <div class="space-y-6">
                     <!-- 2023-2024 -->
                     <div class="bg-gradient-to-r from-neutral-900/60 to-neutral-950/60 border border-neutral-800/50 rounded-2xl p-7 hover:border-neutral-700 transition-all duration-300 fade-in-up">
-                        <div class="flex flex-wrap items-center gap-3 mb-4">
+                        <div class="flex flex-wrap items-center justify-center md:justify-start gap-x-3 gap-y-2 mb-4">
                             <span class="text-blue-400 font-bold text-lg">2023 – 2024</span>
                             <span class="text-muted">·</span>
                             <span class="font-semibold text-base">First Year, Computer Science</span>
@@ -372,7 +388,7 @@
                     </div>
                     <!-- 2024-2025 -->
                     <div class="bg-gradient-to-r from-neutral-900/60 to-neutral-950/60 border border-neutral-800/50 rounded-2xl p-7 hover:border-neutral-700 transition-all duration-300 fade-in-up" style="animation-delay: 0.1s">
-                        <div class="flex flex-wrap items-center gap-3 mb-4">
+                        <div class="flex flex-wrap items-center justify-center md:justify-start gap-x-3 gap-y-2 mb-4">
                             <span class="text-blue-400 font-bold text-lg">2024 – 2025</span>
                             <span class="text-muted">·</span>
                             <span class="font-semibold text-base">Second Year, Licence</span>
@@ -384,7 +400,7 @@
                     </div>
                     <!-- 2025-2026 -->
                     <div class="bg-gradient-to-r from-neutral-900/60 to-neutral-950/60 border border-neutral-800/50 rounded-2xl p-7 hover:border-neutral-700 transition-all duration-300 fade-in-up" style="animation-delay: 0.2s">
-                        <div class="flex flex-wrap items-center gap-3 mb-4">
+                        <div class="flex flex-wrap items-center justify-center md:justify-start gap-x-3 gap-y-2 mb-4">
                             <span class="text-blue-400 font-bold text-lg">2025 – 2026</span>
                             <span class="text-muted">·</span>
                             <span class="font-semibold text-base">Third (Final) Year, Licence</span>
@@ -403,7 +419,7 @@
     </section>
 
     <!-- CONTACT / social & email -->
-    <section id="contact" class="py-28 px-6">
+    <section id="contact" class="py-28 px-5 sm:px-8">
         <div class="container mx-auto max-w-3xl text-center">
             <span class="text-blue-400 font-mono text-sm tracking-widest">// GET IN TOUCH</span>
             <h2 class="text-5xl font-bold mt-4 mb-8">Let's Work Together</h2>
@@ -438,14 +454,17 @@
     <!-- keep the same robust image error handlers from original -->
     <script>
         function handleProfileImageError(img) {
-            const attempts = ['PHOTO.JPEG','/PHOTO.JPEG','./PHOTO.JPEG','./photo.jpeg','photo.jpeg','PHOTO.jpg'];
+            img.removeAttribute('srcset');
+            img.removeAttribute('sizes');
+            const attempts = ['./profile.jpeg','/profile.jpeg','photo.jpeg','PHOTO.JPEG','/PHOTO.JPEG','./PHOTO.JPEG','PHOTO.jpg','profile-768.jpg','profile-400.jpg'];
             let i = 0;
             function next() {
-                if (i<attempts.length) {
+                if (i < attempts.length) {
+                    const url = attempts[i++];
                     let test = new Image();
-                    test.onload = () => { img.src = attempts[i]; img.onerror=null; };
+                    test.onload = () => { img.src = url; img.onerror = null; };
                     test.onerror = next;
-                    test.src = attempts[i++];
+                    test.src = url;
                 } else {
                     img.style.display='none';
                     let placeholder = document.createElement('div');
@@ -467,7 +486,48 @@
                 document.querySelector(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
             });
         });
-        
+
+        (function initMobileNav() {
+            var toggleBtn = document.getElementById('mobile-nav-toggle');
+            var panel = document.getElementById('mobile-nav-panel');
+            var backdrop = document.getElementById('mobile-nav-backdrop');
+            var icon = document.getElementById('mobile-nav-toggle-icon');
+            var htmlEl = document.documentElement;
+            if (!toggleBtn || !panel || !backdrop) return;
+
+            function setMobileNavOpen(open) {
+                toggleBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
+                toggleBtn.setAttribute('aria-label', open ? 'إغلاق القائمة' : 'القائمة');
+                panel.classList.toggle('hidden', !open);
+                backdrop.classList.toggle('mobile-nav-backdrop-open', open);
+                backdrop.setAttribute('aria-hidden', open ? 'false' : 'true');
+                htmlEl.classList.toggle('mobile-nav-open', open);
+                if (icon) {
+                    icon.className = open ? 'fa-solid fa-xmark fa-fw text-2xl pointer-events-none' : 'fa-solid fa-bars fa-fw text-xl pointer-events-none';
+                }
+            }
+
+            toggleBtn.addEventListener('click', function () {
+                setMobileNavOpen(panel.classList.contains('hidden'));
+            });
+            backdrop.addEventListener('click', function () {
+                setMobileNavOpen(false);
+            });
+            panel.querySelectorAll('.mobile-nav-link').forEach(function (link) {
+                link.addEventListener('click', function () {
+                    setMobileNavOpen(false);
+                });
+            });
+            document.addEventListener('keydown', function (e) {
+                if (e.key === 'Escape') setMobileNavOpen(false);
+            });
+            window.addEventListener('resize', function () {
+                if (window.matchMedia('(min-width: 768px)').matches) setMobileNavOpen(false);
+            });
+            var logoHome = document.querySelector('a.nav-logo-home');
+            if (logoHome) logoHome.addEventListener('click', function () { setMobileNavOpen(false); });
+        })();
+
         // scroll animation for elements
         const observerOptions = {
             threshold: 0.1,
@@ -484,10 +544,10 @@
             });
         }, observerOptions);
         
-        // observe all sections and cards
-        const observeElements = document.querySelectorAll('section, .card-dark, .fade-in-up, [class*="bg-gradient"]');
+        // Fade-in scroll animation (avoid whole `<section>` — causes empty gaps on mobile until scroll intersects).
+        const observeElements = document.querySelectorAll('.card-dark, .fade-in-up, [class*="bg-gradient"]');
         observeElements.forEach((el, index) => {
-            if (el.id === 'home') return;
+            if (el.closest && el.closest('#home')) return;
             if (el.closest && el.closest('#projects-more')) return;
             el.style.opacity = '0';
             el.style.transform = 'translateY(30px)';
@@ -525,13 +585,16 @@
             const THEME_KEY = 'portfolio-theme';
             const html = document.documentElement;
             const btn = document.getElementById('theme-toggle');
+            const btnMobile = document.getElementById('theme-toggle-mobile');
             const icon = document.getElementById('theme-icon');
+            const iconMobile = document.getElementById('theme-icon-mobile');
 
             function setTheme(theme) {
                 html.setAttribute('data-theme', theme);
-                if (icon) {
-                    icon.className = theme === 'dark' ? 'fa-regular fa-moon' : 'fa-regular fa-sun';
-                }
+                var iconCls = theme === 'dark' ? 'fa-regular fa-moon text-xl' : 'fa-regular fa-sun text-xl';
+                var iconClsDesktop = theme === 'dark' ? 'fa-regular fa-moon' : 'fa-regular fa-sun';
+                if (icon) icon.className = iconClsDesktop;
+                if (iconMobile) iconMobile.className = iconCls + ' shrink-0';
                 try { localStorage.setItem(THEME_KEY, theme); } catch (e) {}
             }
 
@@ -542,6 +605,7 @@
             }
 
             if (btn) btn.addEventListener('click', toggleTheme);
+            if (btnMobile) btnMobile.addEventListener('click', toggleTheme);
 
             // Apply saved theme or default dark
             try {
